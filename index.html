@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Producción</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            max-width: 400px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .bajo { color: red; }
+        .aceptable { color: #ffcc00; }
+        .excelente { color: green; }
+        .separator { border-top: 1px dashed #ccc; margin: 10px 0; }
+        .result { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Control de Producción</h1>
+        <script>
+            let nombre = prompt("Digite el nombre del operario");
+            let tipoProducto = prompt("Digite el tipo de producto:\n1 → Componente A\n2 → Componente B\n3 → Componente C");
+
+            let numProducto = parseInt(tipoProducto);
+            let costoUnitario = 0;
+            let nombreProducto = "";
+
+            switch (numProducto) {
+                case 1:
+                    costoUnitario = 5000;
+                    nombreProducto = "Componente A";
+                    break;
+                case 2:
+                    costoUnitario = 7000;
+                    nombreProducto = "Componente B";
+                    break;
+                case 3:
+                    costoUnitario = 10000;
+                    nombreProducto = "Componente C";
+                    break;
+                default:
+                    console.log("Error: Tipo de producto no válido.");
+                    document.write("<p class='bajo'>Error: Tipo de producto no válido. Por favor, seleccione 1, 2 o 3.</p>");
+                    break;
+            }
+
+            let piezasTotal = 0;
+            let piezasPorDia = [];
+            let continuar = true;
+
+            while (continuar) {
+                let piezas = parseInt(prompt("Digite la cantidad de piezas producidas por día"));
+                if (piezas >= 0 && piezas === parseInt(piezas)) {
+                    piezasTotal += piezas;
+                    piezasPorDia.push(piezas); //el push no lo hemos visto en clase pero lo use para crear un "array" de forma mas rapida por asi decirlo//
+                } //este push funcionara para sumar al "contador" de piezas por dia para hacerlo de forma mas efectiva//
+                continuar = prompt("¿Desea registrar otro día? (si/no)") === "si";
+            }
+
+            let rendimiento = "";
+            if (piezasTotal < 50) {
+                rendimiento = "Bajo rendimiento";
+            } else if (piezasTotal >= 50 && piezasTotal <= 100) {
+                rendimiento = "Rendimiento aceptable";
+            } else {
+                rendimiento = "Rendimiento excelente";
+            }
+
+            let costoTotal = piezasTotal * costoUnitario;
+
+            let claseRendimiento = rendimiento === "Bajo rendimiento" ? "bajo" : 
+                                 rendimiento === "Rendimiento aceptable" ? "aceptable" : "excelente";
+
+            document.write("<p class='result'>Operario: " + nombre + "</p>");
+            document.write("<p class='result'>Producto: " + nombreProducto + "</p>");
+
+            for (let i = 0; i < piezasPorDia.length; i++) { //use .length para evitar problemas con el array de los dias el .length es mas adaptable//
+                document.write("<p class='result'>Día " + (i + 1) + ": " + piezasPorDia[i] + " piezas</p>");
+            }
+
+            document.write("<p class='separator'>-----------------</p>");
+            document.write("<p class='result'>Total de piezas: " + piezasTotal + "</p>");
+            document.write("<p class='result'>Costo unitario: $" + costoUnitario + "</p>");
+            document.write("<p class='result'>Costo total: $" + costoTotal + "</p>");
+            document.write("<p class='" + claseRendimiento + "'>Rendimiento: " + rendimiento + " &#11088;</p>");
+        </script>
+    </div>
+</body>
+</html>
